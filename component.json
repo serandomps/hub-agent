@@ -1,0 +1,11 @@
+{
+    "name": "hub-agent",
+    "description": "hub-agent component",
+    "local": [],
+    "scripts": ["index.js"],
+    "main": "index.js",
+    "dependencies": {
+        "serandomps/serand": "master",
+        "serandomps/socket.io": "master"
+    }
+}
