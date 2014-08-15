@@ -1,8 +1,6 @@
 var serand = require('serand');
 var io = require('socket.io');
 
-var consol;
-
 var HUB = 'wss://hub.serandives.com:4000/app';
 
 var hub = io.connect(HUB, {
@@ -10,14 +8,13 @@ var hub = io.connect(HUB, {
 });
 
 hub.once('connect', function () {
-    hub.on('done', function (options) {
-        console.log(options);
-        consol.append(options.data);
+    hub.on('drone started', function (data) {
+        console.log(data);
     });
 });
 
-serand.on('hub', 'drones start', function (data) {
+serand.on('hub', 'drone start', function (data) {
     console.log('received event');
     console.log(data);
-    hub.emit('drones start', data);
+    hub.emit('drone start', data);
 });
