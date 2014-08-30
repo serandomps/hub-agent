@@ -18,3 +18,15 @@ serand.on('hub', 'drone start', function (data) {
     console.log(data);
     hub.emit('drone start', data);
 });
+
+serand.on('hub', 'self up', function (data) {
+    console.log('received event');
+    console.log(data);
+    hub.emit('self up', data);
+});
+
+serand.on('hub', 'clients up', function (data) {
+    console.log('received event');
+    console.log(data);
+    hub.emit('clients up', data);
+});
