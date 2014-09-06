@@ -19,6 +19,12 @@ serand.on('hub', 'drone start', function (data) {
     hub.emit('drone start', data);
 });
 
+serand.on('hub', 'drone stop', function (data) {
+    console.log('received event');
+    console.log(data);
+    hub.emit('drone stop', data);
+});
+
 serand.on('hub', 'self up', function (data) {
     console.log('received event');
     console.log(data);
@@ -29,4 +35,8 @@ serand.on('hub', 'clients up', function (data) {
     console.log('received event');
     console.log(data);
     hub.emit('clients up', data);
+});
+
+serand.on('hub', 'domain restart', function (data) {
+    hub.emit('domain restart', data);
 });
