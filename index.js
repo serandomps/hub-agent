@@ -8,7 +8,7 @@ serand.on('user', 'login', function (data) {
         transports: ['websocket'],
         query: 'token=' + data.token
     });
-    
+
     hub.once('connect', function () {
         hub.on('drone started', function (data) {
             console.log(data);
