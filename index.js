@@ -3,7 +3,7 @@ var io = require('socket.io');
 
 var HUB = 'wss://hub.serandives.com:4000/app';
 
-serand.on('user', 'login', function (data) {
+serand.on('user', 'logged in', function (data) {
     var hub = io.connect(HUB, {
         transports: ['websocket'],
         query: 'token=' + data.token
