@@ -3,10 +3,40 @@ var io = require('socket.io');
 
 var HUB = 'wss://hub.serandives.com:4000/app';
 
+var hub;
+
+var start = function (data) {
+    console.log('received event:drone start');
+    console.log(data);
+    hub.emit('drone start', data);
+};
+
+var stop = function (data) {
+    console.log('received event:drone stop');
+    console.log(data);
+    hub.emit('drone stop', data);
+};
+
+var selfup = function (data) {
+    console.log('received event:self up');
+    console.log(data);
+    hub.emit('self up', data);
+};
+
+var clientup = function (data) {
+    console.log('received event:clients up');
+    console.log(data);
+    hub.emit('clients up', data);
+};
+
+var restart = function (data) {
+    hub.emit('domain restart', data);
+};
+
 serand.on('user', 'logged in', function (data) {
-    var hub = io.connect(HUB, {
+    hub = io.connect(HUB, {
         transports: ['websocket'],
-        query: 'token=' + data.token
+        query: 'token=' + data.access
     });
 
     hub.once('connect', function () {
@@ -14,32 +44,17 @@ serand.on('user', 'logged in', function (data) {
             console.log(data);
         });
     });
+    serand.on('hub', 'drone start', start);
+    serand.on('hub', 'drone stop', stop);
+    serand.on('hub', 'self up', selfup);
+    serand.on('hub', 'clients up', clientup);
+    serand.on('hub', 'domain restart', restart);
+});
 
-    serand.on('hub', 'drone start', function (data) {
-        console.log('received event:drone start');
-        console.log(data);
-        hub.emit('drone start', data);
-    });
-
-    serand.on('hub', 'drone stop', function (data) {
-        console.log('received event:drone stop');
-        console.log(data);
-        hub.emit('drone stop', data);
-    });
-
-    serand.on('hub', 'self up', function (data) {
-        console.log('received event:self up');
-        console.log(data);
-        hub.emit('self up', data);
-    });
-
-    serand.on('hub', 'clients up', function (data) {
-        console.log('received event:clients up');
-        console.log(data);
-        hub.emit('clients up', data);
-    });
-
-    serand.on('hub', 'domain restart', function (data) {
-        hub.emit('domain restart', data);
-    });
+serand.on('user', 'logged out', function (data) {
+    serand.off('hub', 'drone start', start);
+    serand.off('hub', 'drone stop', stop);
+    serand.off('hub', 'self up', selfup);
+    serand.off('hub', 'clients up', clientup);
+    serand.off('hub', 'domain restart', restart);
 });
