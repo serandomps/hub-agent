@@ -20,7 +20,9 @@ var stop = function (data) {
 var selfup = function (data) {
     console.log('received event:self up');
     console.log(data);
-    hub.emit('self up', data);
+    $.post('/apis/v/hub/self/up', function (data) {
+        console.log(data);
+    });
 };
 
 var clientup = function (data) {
@@ -34,16 +36,6 @@ var restart = function (data) {
 };
 
 serand.on('user', 'logged in', function (data) {
-    hub = io.connect(HUB, {
-        transports: ['websocket'],
-        query: 'token=' + data.access
-    });
-
-    hub.once('connect', function () {
-        hub.on('drone started', function (data) {
-            console.log(data);
-        });
-    });
     serand.on('hub', 'drone start', start);
     serand.on('hub', 'drone stop', stop);
     serand.on('hub', 'self up', selfup);
