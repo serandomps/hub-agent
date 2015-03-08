@@ -8,13 +8,21 @@ var hub;
 var start = function (data) {
     console.log('received event:drone start');
     console.log(data);
-    hub.emit('drone start', data);
+    $.post('/apis/v/drones', data, function (data) {
+        console.log(data);
+    });
 };
 
 var stop = function (data) {
     console.log('received event:drone stop');
     console.log(data);
-    hub.emit('drone stop', data);
+    $.ajax({
+        url: '/apis/v/drones/' + data.id,
+        type: 'DELETE',
+        success: function (data) {
+            console.log(data);
+        }
+    });
 };
 
 var selfup = function (data) {
@@ -28,7 +36,9 @@ var selfup = function (data) {
 var clientup = function (data) {
     console.log('received event:clients up');
     console.log(data);
-    hub.emit('clients up', data);
+    $.post('/apis/v/hub/client/up', function (data) {
+        console.log(data);
+    });
 };
 
 var restart = function (data) {
