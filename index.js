@@ -1,9 +1,4 @@
 var serand = require('serand');
-var io = require('socket.io');
-
-var HUB = 'wss://hub.serandives.com:4000/app';
-
-var hub;
 
 var start = function (data) {
     console.log('received event:drone start');
@@ -42,7 +37,11 @@ var clientup = function (data) {
 };
 
 var restart = function (data) {
-    hub.emit('domain restart', data);
+    console.log('received event:clients up');
+    console.log(data);
+    $.post('/apis/v/domains/' + data.id + '/restart', function (data) {
+        console.log(data);
+    });
 };
 
 serand.on('user', 'logged in', function (data) {
