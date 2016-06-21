@@ -37,9 +37,17 @@ var clientup = function (data) {
 };
 
 var restart = function (data) {
-    console.log('received event:clients up');
+    console.log('received event:restart');
     console.log(data);
     $.post('/apis/v/domains/' + data.id + '/restart', function (data) {
+        console.log(data);
+    });
+};
+
+var deploy = function (data) {
+    console.log('received event:deploy');
+    console.log(data);
+    $.post('/apis/v/domains/' + data.id + '/deploy', function (data) {
         console.log(data);
     });
 };
@@ -50,6 +58,7 @@ serand.on('user', 'logged in', function (data) {
     serand.on('hub', 'self up', selfup);
     serand.on('hub', 'clients up', clientup);
     serand.on('hub', 'domain restart', restart);
+    serand.on('hub', 'domain deploy', deploy);
 });
 
 serand.on('user', 'logged out', function (data) {
@@ -58,4 +67,5 @@ serand.on('user', 'logged out', function (data) {
     serand.off('hub', 'self up', selfup);
     serand.off('hub', 'clients up', clientup);
     serand.off('hub', 'domain restart', restart);
+    serand.off('hub', 'domain deploy', deploy);
 });
